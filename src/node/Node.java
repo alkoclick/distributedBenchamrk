@@ -14,7 +14,7 @@ public class Node {
 	private static Scanner input;
 	private static String nextNode;
 	private static String nextNodePort;
-	private static int myID;
+	private static long myID;
 
 	public static void main(String[] args) throws Exception {
 		if (args.length==1) {
@@ -36,7 +36,8 @@ public class Node {
 	}
 	
 	private static void init() throws Exception{
-		myID = new Random().nextInt(1000);
+//		myID = new Random().nextInt(1000);
+		myID = benchMark();
 		System.out.println("Chosen ID is "+myID);
 		System.out.println("Next Node IP: ");
 		nextNode = input.nextLine();
@@ -68,8 +69,23 @@ public class Node {
 		connect( msg, nextNode, nextNodePort );
 	}
 
-	public static int getMyID() {
+	public static long getMyID() {
 		return myID;
+	}
+	
+	private static long benchMark() {
+		long total = 0;
+		for (int j=0;j<100;++j){
+			long startTime = System.nanoTime();
+			int count = 0;
+			for (int i=0;i<100000;++i){
+				count++;
+			}
+			long endTime = System.nanoTime();
+			total += (endTime - startTime);
+		}
+		long score = total / 10;
+		return score;
 	}
 
 }
